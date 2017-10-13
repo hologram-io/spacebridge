@@ -140,6 +140,8 @@ class SpaceBridge:
                 orgid = self.ui.prompt_for_orgid(orgs)
             else:
                 orgid = orgs[0]['id']
+            if orgid is None or not orgid:
+                sys.exit(0)
             links = self.load_link_list(orgid)
             if not links:
                 raise ErrorException(

@@ -2,6 +2,16 @@
 
 set -e
 
+SIGNBIN=0
+
+while getopts "s" opt; do
+    case $opt in
+        s)
+            SIGNBIN=1
+            ;;
+    esac
+done
+
 OS="`uname`"
 PLATFORM='unknown'
 VE="ve/bin/"
@@ -50,6 +60,10 @@ rm spacebridge.spec.bak
 PI=$VE
 PI+=pyinstaller
 $PI spacebridge.spec
+
+if [ "$SIGNBIN" -eq "1" ]; then
+    cmd /c runsigntool.bat
+fi
 
 cd dist
 mkdir -p $buildname/bin/

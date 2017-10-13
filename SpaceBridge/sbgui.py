@@ -35,6 +35,8 @@ from Tkinter import *
 import re
 import tkMessageBox
 from sbexceptions import ErrorException, MissingParamException
+import sbutils
+
 
 class SpaceBridgeGUI:
     title = "Hologram SpaceBridge"
@@ -78,12 +80,12 @@ class SpaceBridgeGUI:
         return easygui.exceptionbox(
                 title=self.title)
 
-
     def prompt_for_orgid(self, orgs):
         org_list = []
         org_map = {}
         for org in orgs:
-            org_list.append(org['name'])
+            org_name = sbutils.printable_string(org['name'])
+            org_list.append(org_name)
             org_map[org['name']] = org['id']
         res = easygui.choicebox(
                 msg='What organization will you be connecting to?',
