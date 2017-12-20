@@ -32,3 +32,5 @@ class ErrorException(Exception):
     # For exceptions that we planned for and just want to show an error message
     pass
 
+class UpdaterException(Exception):
+    pass

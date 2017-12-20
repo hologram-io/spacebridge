@@ -38,7 +38,7 @@ import sys
 import argparse
 import paramiko
 import logging
-from sbexceptions import MissingParamException, ErrorException
+from SpaceBridge.sbexceptions import MissingParamException, ErrorException, UpdaterException
 import sbgui
 import sbtextui
 import requests
@@ -50,7 +50,7 @@ DEFAULT_LOCAL_HOST = '127.0.0.1'
 
 
 class AllowHologramPolicy(paramiko.MissingHostKeyPolicy):
-    hologram_fingerprint = '\xc7\xd2l\xe2WPI\xbf<#s\xc5\xcc9H\xa3'
+    hologram_fingerprint = '\xa3\x37\x33\x65\x0e\x2f\x14\x51\xa9\xf2\x73\xe0\x13\x06\x3c\xe4'
 
     def missing_host_key(self, client, hostname, key):
         if key.get_fingerprint() != self.hologram_fingerprint:

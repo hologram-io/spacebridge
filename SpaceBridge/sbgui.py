@@ -69,7 +69,8 @@ class SpaceBridgeGUI:
     def show_message(self, message):
         return easygui.msgbox(
                 msg=message,
-                title=self.title)
+                title=self.title,
+                ok_button="Close Tunnel")
 
 
     def show_error_message(self, message):
@@ -98,7 +99,7 @@ class SpaceBridgeGUI:
 
     def tunnel_running(self, fwdmessage):
         msg = "Tunnel is running\n\n" + fwdmessage +\
-                "\nClick OK to close the tunnel and exit"
+                "\nClick \"Close Tunnel\" to exit"
         self.show_message(msg)
 
 
