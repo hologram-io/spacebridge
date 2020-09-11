@@ -42,7 +42,9 @@ from SpaceBridge.sbexceptions import MissingParamException, ErrorException, Upda
 import sbgui
 import sbtextui
 import requests
+#pylint: disable=no-member
 requests.packages.urllib3.disable_warnings()
+#pylint: enable=no-member
 import portforward
 
 
@@ -68,14 +70,14 @@ class SpaceBridge:
     forwards = []
     local_host = DEFAULT_LOCAL_HOST
 
-    def __init__(self, version, istext = False, isverbose = False):
-        if istext:
+    def __init__(self, version, args):
+        if args.text_mode:
             self.ui = sbtextui.SpaceBridgeTextUI(version)
         else:
             self.ui = sbgui.SpaceBridgeGUI(version)
 
-        if isverbose:
-            self.verbose = isverbose
+        if args.verbose:
+            self.verbose = args.verbose
             self.log_level = logging.INFO
 
         self.settings_dir = os.path.expanduser("~") + os.path.sep + '.hologram'
@@ -103,7 +105,10 @@ class SpaceBridge:
 
         self.client = paramiko.SSHClient()
         self.client.load_system_host_keys()
-        self.client.set_missing_host_key_policy(AllowHologramPolicy())
+        if args.no_fingerprint:
+            self.client.set_missing_host_key_policy(paramiko.client.AutoAddPolicy())
+        else:
+            self.client.set_missing_host_key_policy(AllowHologramPolicy())
 
     def collect_user_prefs(self, args):
         if args.apibase:
@@ -175,6 +180,7 @@ class SpaceBridge:
         apiurl = self.apibase + 'users/me/'
         url_params = {'apikey' : self.apikey}
         r = requests.get(apiurl, params=url_params)
+        #pylint: disable=no-member
         if r.status_code != requests.codes.ok:
             raise ErrorException('Error connecting to API: ' + r.text)
         else:
@@ -188,6 +194,7 @@ class SpaceBridge:
                 'orgid':orgid, 'tunnelable':1,
                 'limit':1000}
         r = requests.get(apiurl, params=url_params)
+        #pylint: disable=no-member
         if r.status_code != requests.codes.ok:
             raise UpdaterException('Error connecting to API: ' + r.text)
         else:
@@ -202,6 +209,7 @@ class SpaceBridge:
         orgs = []
         while True:
             r = requests.get(apiurl, params=url_params)
+            #pylint: disable=no-member
             if r.status_code != requests.codes.ok:
                 raise UpdaterException('Error connecting to API: ' + r.text)
             else:
@@ -235,6 +243,7 @@ class SpaceBridge:
             payload = {'public_key': publickey}
             params = {'apikey': self.apikey}
             r = requests.post(self.apibase + "tunnelkeys", json=payload, params=params)
+            #pylint: disable=no-member
             if r.status_code != requests.codes.ok:
                 raise ErrorException('Error uploading public key: ' + r.text)
             else:
@@ -245,6 +254,7 @@ class SpaceBridge:
         apiurl = self.apibase + "tunnelkeys"
         params = {'apikey': self.apikey}
         r = requests.post(apiurl, params=params)
+        #pylint: disable=no-member
         if r.status_code != requests.codes.ok:
             raise ErrorException('Error generating keypair: ' + r.text)
         else:
@@ -328,9 +338,10 @@ def main():
         version='SpaceBridge v'+version)
     # hidden options
     parser.add_argument('--apibase', help=argparse.SUPPRESS)
+    parser.add_argument('--no-fingerprint', help=argparse.SUPPRESS, action='store_true')
     parser.add_argument('--tunnel-server', help=argparse.SUPPRESS)
     parser.add_argument('--tunnel-port', help=argparse.SUPPRESS, type=int)
     args = parser.parse_args()
 
-    sb = SpaceBridge(version, args.text_mode, args.verbose)
+    sb = SpaceBridge(version, args)
     sb.run(args)
