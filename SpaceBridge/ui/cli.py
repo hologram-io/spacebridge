@@ -28,7 +28,7 @@
 from sbexceptions import ErrorException, MissingParamException
 import sys
 
-class SpaceBridgeTextUI:
+class SpaceBridgeCLI:
     title = "Hologram SpaceBridge"
     def __init__(self, version):
         title = self.title + ' v' + version

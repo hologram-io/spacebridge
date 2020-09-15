@@ -30,8 +30,8 @@ import re
 import easygui
 from tkinter import *
 from tkinter import messagebox
-from sbexceptions import ErrorException, MissingParamException
-import sbutils
+from spacebridge.exceptions import ErrorException, MissingParamException
+from spacebridge.utils import printable_string
 
 
 class SpaceBridgeGUI:
@@ -81,7 +81,7 @@ class SpaceBridgeGUI:
         org_list = []
         org_map = {}
         for org in orgs:
-            org_name = sbutils.printable_string(org['name'])
+            org_name = printable_string(org['name'])
             org_list.append(org_name)
             org_map[org['name']] = org['id']
         res = easygui.choicebox(

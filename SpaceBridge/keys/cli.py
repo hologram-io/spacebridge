@@ -53,13 +53,13 @@ from paramiko import DSSKey
 from paramiko import RSAKey
 from paramiko.ssh_exception import SSHException
 from paramiko.py3compat import u
-import KTunnelLib
+from spacebridge.keys.keygen import SpacebridgeKeyGen
 
 def main():
     usage="""
 %prog [-v] [-b bits] -t type [-N new_passphrase] [-f output_keyfile]"""
     
-    gen = KTunnelLib.KTunnelKeyGen()
+    gen = SpacebridgeKeyGen()
 
     parser = OptionParser(usage=usage)
     parser.add_option("-t", "--type", type="string", dest="ktype",

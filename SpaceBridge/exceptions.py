@@ -1,5 +1,5 @@
 #
-# sbexceptions.py
+# exceptions.py
 #
 # Author: Reuben Balik <reuben@konekt.io>
 #

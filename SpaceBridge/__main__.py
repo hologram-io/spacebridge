@@ -38,13 +38,11 @@ import sys
 import argparse
 import paramiko
 import logging
-from SpaceBridge.sbexceptions import MissingParamException, ErrorException, UpdaterException
-import sbgui
-import sbtextui
+from spacebridge.exceptions import MissingParamException, ErrorException, UpdaterException
+import spacebridge.ui.gui import SpaceBridgeGUI
+from spacebridge.ui.cli import SpaceBridgeCLI
 import requests
-#pylint: disable=no-member
 requests.packages.urllib3.disable_warnings()
-#pylint: enable=no-member
 import portforward
 
 
@@ -72,9 +70,9 @@ class SpaceBridge:
 
     def __init__(self, version, args):
         if args.text_mode:
-            self.ui = sbtextui.SpaceBridgeTextUI(version)
+            self.ui = SpaceBridgeCLI(version)
         else:
-            self.ui = sbgui.SpaceBridgeGUI(version)
+            self.ui = SpaceBridgeGUI(version)
 
         if args.verbose:
             self.verbose = args.verbose
@@ -318,30 +316,30 @@ def get_version():
         return f.readline().rstrip()
 
 
-def main():
-    version = get_version()
-    parser = argparse.ArgumentParser(description=HELP,
-        add_help=True)
-    parser.add_argument('--apikey', help='Hologram API key')
-    parser.add_argument('-f', '--forward', dest="forwards", action="append",
-        help="Specify any number of port forwards in the format <linkid>:<device port>:<local port>")
-    parser.add_argument('--verbose', action='store_true')
-    parser.add_argument('--text-mode', action='store_true',
-        help="Disable the GUI and do everything via text inputs")
-    parser.add_argument('--local-host', default=DEFAULT_LOCAL_HOST,
-        help='local host IP to bind to (default: %s)' % DEFAULT_LOCAL_HOST)
-    parser.add_argument('--upload-publickey', dest="publickey",
-        help='Upload specified public key to the server to authenticate against with --privatekey')
-    parser.add_argument('-i', '--privatekey', dest="privatekey",
-        help='Use specified private key to authenticate. Defaults to ~/.hologram/spacebridge.key')
-    parser.add_argument('--version', action='version',
-        version='SpaceBridge v'+version)
-    # hidden options
-    parser.add_argument('--apibase', help=argparse.SUPPRESS)
-    parser.add_argument('--no-fingerprint', help=argparse.SUPPRESS, action='store_true')
-    parser.add_argument('--tunnel-server', help=argparse.SUPPRESS)
-    parser.add_argument('--tunnel-port', help=argparse.SUPPRESS, type=int)
-    args = parser.parse_args()
 
-    sb = SpaceBridge(version, args)
-    sb.run(args)
+version = get_version()
+parser = argparse.ArgumentParser(description=HELP,
+    add_help=True)
+parser.add_argument('--apikey', help='Hologram API key')
+parser.add_argument('-f', '--forward', dest="forwards", action="append",
+    help="Specify any number of port forwards in the format <linkid>:<device port>:<local port>")
+parser.add_argument('--verbose', action='store_true')
+parser.add_argument('--text-mode', action='store_true',
+    help="Disable the GUI and do everything via text inputs")
+parser.add_argument('--local-host', default=DEFAULT_LOCAL_HOST,
+    help='local host IP to bind to (default: %s)' % DEFAULT_LOCAL_HOST)
+parser.add_argument('--upload-publickey', dest="publickey",
+    help='Upload specified public key to the server to authenticate against with --privatekey')
+parser.add_argument('-i', '--privatekey', dest="privatekey",
+    help='Use specified private key to authenticate. Defaults to ~/.hologram/spacebridge.key')
+parser.add_argument('--version', action='version',
+    version='SpaceBridge v'+version)
+# hidden options
+parser.add_argument('--apibase', help=argparse.SUPPRESS)
+parser.add_argument('--no-fingerprint', help=argparse.SUPPRESS, action='store_true')
+parser.add_argument('--tunnel-server', help=argparse.SUPPRESS)
+parser.add_argument('--tunnel-port', help=argparse.SUPPRESS, type=int)
+args = parser.parse_args()
+
+sb = SpaceBridge(version, args)
+sb.run(args)

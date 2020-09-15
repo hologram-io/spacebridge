@@ -39,7 +39,7 @@ from paramiko.py3compat import u
 
 import os.path
 
-class KTunnelKeyGen:
+class SpacebridgeKeyGen:
     default_values = {
         "ktype": "rsa",
         "bits": 2048,
