@@ -39,7 +39,7 @@ import argparse
 import paramiko
 import logging
 from spacebridge.exceptions import MissingParamException, ErrorException, UpdaterException
-import spacebridge.ui.gui import SpaceBridgeGUI
+from spacebridge.ui.gui import SpaceBridgeGUI
 from spacebridge.ui.cli import SpaceBridgeCLI
 import requests
 requests.packages.urllib3.disable_warnings()
