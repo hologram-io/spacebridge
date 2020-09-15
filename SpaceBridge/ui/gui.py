@@ -27,7 +27,6 @@
 
 import sys
 import re
-import easygui
 from tkinter import *
 from tkinter import messagebox
 from spacebridge.exceptions import ErrorException, MissingParamException
