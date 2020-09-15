@@ -36,7 +36,7 @@ class SpaceBridgeTextUI:
 
 
     def prompt_for_apikey(self):
-        return raw_input("Please enter your Hologram API key: ")
+        return input("Please enter your Hologram API key: ")
 
 
     def prompt_for_forwards(self, links):
@@ -54,9 +54,9 @@ class SpaceBridgeTextUI:
             device_port = 0
             local_port = 0
             while True:
-                linkid = raw_input("Enter link ID to forward: ")
-                device_port = raw_input("Enter device port: ")
-                local_port = raw_input("Enter local port: ")
+                linkid = input("Enter link ID to forward: ")
+                device_port = input("Enter device port: ")
+                local_port = input("Enter local port: ")
                 if not linkid.isdigit():
                     print("Error: Invalid linkid")
                 linkid = int(linkid)
@@ -86,7 +86,7 @@ class SpaceBridgeTextUI:
                 orgids.append(org['id'])
                 print("  ID#%d - %s"%(org['id'], org['name']))
             while True:
-                orgid = raw_input(
+                orgid = input(
                         "Choose the organization id to search for the device: ")
                 if not orgid.isdigit():
                     print("Error: Invalid organization id")
@@ -108,7 +108,7 @@ class SpaceBridgeTextUI:
         "If you have a key already that you want to use or want to generate "
         "one on your own exit this program (CTRL-C) and run with the --upload-publickey and --privatekey arguments.")
         print(message)
-        raw_input("Press enter to continue...")
+        input("Press enter to continue...")
         return True
 
 
@@ -127,6 +127,6 @@ class SpaceBridgeTextUI:
     def tunnel_running(self, fwdmessage):
         msg = "Tunnel is running\n\n" + fwdmessage + "\n"
         print(msg)
-        raw_input("Hit enter to close tunnel and exit...")
+        input("Hit enter to close tunnel and exit...")
 
 

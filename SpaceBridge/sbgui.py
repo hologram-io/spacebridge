@@ -25,15 +25,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# This is super hacky. Pyinstaller imports future which seems to have a
-# bug where certain pieces of tkinter are missing. We want to force
-# easygui to use the built-in 2.7 Tkinter and not the future tkinter
 import sys
-sys.modules['tkinter']=None
-import easygui
-from Tkinter import *
 import re
-import tkMessageBox
+import easygui
+from tkinter import *
+from tkinter import messagebox
 from sbexceptions import ErrorException, MissingParamException
 import sbutils
 
@@ -74,7 +70,7 @@ class SpaceBridgeGUI:
 
 
     def show_error_message(self, message):
-        tkMessageBox.showerror(self.title, message)
+        messagebox.showerror(self.title, message)
 
 
     def show_exception(self):
@@ -136,7 +132,7 @@ class PortForwardGui:
             lp = pw['lp'].get(1.0, 'end-1c')
             if devicestring and dp and lp:
                 if not dp.isdigit() or not lp.isdigit():
-                    tkMessageBox.showerror(self.title, "Ports must be a number")
+                    messagebox.showerror(self.title, "Ports must be a number")
                     return
                 linkid = self.parse_link_string(devicestring)
                 forward = [linkid, int(dp), int(lp)]
